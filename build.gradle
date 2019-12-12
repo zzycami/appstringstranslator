@@ -1,0 +1,41 @@
+plugins {
+    id "org.springframework.boot" version "2.1.7.RELEASE"
+    id "io.freefair.lombok" version "3.0.0"
+    id 'java'
+}
+
+apply plugin: 'io.spring.dependency-management'
+apply plugin: 'org.springframework.boot'
+
+group 'com.bravedefault'
+version '1.0。0'
+
+sourceCompatibility = 1.8
+
+repositories {
+    maven { url 'https://maven.aliyun.com/nexus/content/groups/public' }
+    mavenCentral()
+    jcenter()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-freemarker'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+
+    // https://github.com/square/okhttp
+    implementation("com.squareup.okhttp3:okhttp:3.12.1")
+
+    // https://github.com/google/gson
+    implementation 'com.google.code.gson:gson:2.8.5'
+
+    // https://jsoup.org/
+    implementation 'org.jsoup:jsoup:1.12.1'
+
+    runtimeOnly 'com.h2database:h2'
+    runtimeOnly 'mysql:mysql-connector-java'
+
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
