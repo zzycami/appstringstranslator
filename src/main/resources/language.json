@@ -1,0 +1,98 @@
+[
+  {
+    "iso": "Afrikaans",
+    "native": "Afrikaans",
+    "name": "南非语",
+    "value": "af"
+  },
+  {
+    "iso": "Albanian",
+    "native": "Shqip",
+    "name": "阿尔巴尼亚语",
+    "value": "sq"
+  },
+  {
+    "iso": "Amharic",
+    "native": "አማርኛ",
+    "name": "阿姆哈拉语",
+    "value": "am"
+  },
+  {
+    "iso": "Arabic",
+    "native": "العربية",
+    "name": "阿拉伯语",
+    "value": "ar"
+  },
+  {
+    "iso": "Armenian",
+    "native": "Հայերեն",
+    "name": "亚美尼亚语",
+    "value": "hy"
+  },
+  {
+    "iso": "Azerbaijani",
+    "native": "azərbaycan dili",
+    "name": "阿塞拜疆语",
+    "value": "az"
+  },
+  {
+    "iso": "Danish",
+    "native": "dansk",
+    "name": "丹麦语",
+    "value": "da"
+  },
+  {
+    "iso": "Ukrainian",
+    "native": "Українська",
+    "name": "乌克兰语",
+    "value": "uk"
+  },
+  {
+    "iso": "Russian",
+    "native": "русский",
+    "name": "俄语",
+    "value": "ru"
+  },
+  {
+    "iso": "Croatian",
+    "native": "hrvatski",
+    "name": "克罗地亚语",
+    "value": "hr"
+  },
+  {
+    "iso": "Catalan",
+    "native": "català",
+    "name": "加泰罗尼亚语",
+    "value": "ca"
+  },
+  {
+    "iso": "Hungarian",
+    "native": "magyar",
+    "name": "匈牙利语",
+    "value": "hu"
+  },
+  {
+    "iso": "Norwegian",
+    "native": "Norsk",
+    "name": "博克马尔文挪威语",
+    "value": "no"
+  },
+  {
+    "iso": "Hindi",
+    "native": "हिन्दी",
+    "name": "印地語",
+    "value": "hi"
+  },
+  {
+    "iso": "Indonesian",
+    "native": "Bahasa",
+    "name": "印度尼西亚语",
+    "value": "id"
+  },
+  {
+    "iso": "Turkish",
+    "native": "Türkçe",
+    "name": "土耳其语",
+    "value": "tr"
+  }
+]

@@ -1,26 +1,32 @@
 package run.app.translator.controllers;
 
-import okhttp3.OkHttpClient;
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import run.app.translator.googleTranslate.GoogleTranslate;
 import run.app.translator.models.Files;
 import run.app.translator.models.Strings;
 import run.app.translator.service.FileService;
 import run.app.translator.service.StringsService;
 
+import javax.script.ScriptException;
 import javax.servlet.http.HttpServletRequest;
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
+import java.util.List;
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -29,6 +35,18 @@ import java.util.regex.Pattern;
 public class IndexController {
     private FileService fileService;
     private StringsService stringsService;
+    private GoogleTranslate googleTranslate;
+
+    @Value("classpath:language.json")
+    private Resource languageResource;
+
+    @Value("classpath:gettk.js")
+    private Resource scriptResource;
+
+    @Autowired
+    public void setGoogleTranslate(GoogleTranslate googleTranslate) {
+        this.googleTranslate = googleTranslate;
+    }
 
     @Autowired
     public void setFileService(FileService fileService) {
@@ -44,6 +62,20 @@ public class IndexController {
     public String index(Model model) {
         model.addAttribute("title", "多语言自动配置");
         return "index";
+    }
+
+    @RequestMapping("language")
+    @ResponseBody
+    public String language() throws IOException {
+        return IOUtils.toString(languageResource.getInputStream(), StandardCharsets.UTF_8);
+    }
+
+    @RequestMapping("translate/word/{word}/from/{from}/to/{to}")
+    @ResponseBody
+    public String translate(@PathVariable("word") String word, @PathVariable("from") String from, @PathVariable("to") String to) throws IOException, ScriptException, NoSuchMethodException {
+        googleTranslate.setScriptResource(this.scriptResource);
+        String tkk = googleTranslate.getTKK();
+        return googleTranslate.translate(word, from, to);
     }
 
     @PostMapping("upload")
@@ -64,7 +96,7 @@ public class IndexController {
         if (oldFilename != null) {
             extension = oldFilename.substring(oldFilename.lastIndexOf("."));
         }
-        String filename = UUID.randomUUID().toString() ;
+        String filename = UUID.randomUUID().toString();
         try {
             File savedFile = new File(folder, filename + extension);
             file.transferTo(savedFile);
@@ -75,12 +107,6 @@ public class IndexController {
             e.printStackTrace();
         }
         return null;
-    }
-
-    @RequestMapping("translate")
-    public String translate() {
-        OkHttpClient client = new OkHttpClient.Builder().build();
-        return "";
     }
 
     private Iterable<Strings> parseStrings(File filename, Files files) throws IOException {
