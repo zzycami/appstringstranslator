@@ -6,6 +6,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 @Entity
 @ToString
@@ -34,9 +37,19 @@ public class Files extends BaseEntity {
     @Column(name = "suffix", columnDefinition = "varchar(50) default ''")
     private String suffix;
 
+    @Column(name="translated_language", columnDefinition = "varchar(255) default ''")
+    private String translatedLanguage;
     /**
      * Attachment size.
      */
     @Column(name = "size", columnDefinition = "bigint not null")
     private Long size;
+
+    public List<String> translatedLanguageList() {
+        if (this.translatedLanguage != null) {
+            return Arrays.asList(this.translatedLanguage.split(","));
+        }else {
+            return new ArrayList<>();
+        }
+    }
 }

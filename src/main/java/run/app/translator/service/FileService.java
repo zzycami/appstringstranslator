@@ -1,10 +1,13 @@
 package run.app.translator.service;
 
+import org.jsoup.internal.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import run.app.translator.models.Files;
 import run.app.translator.repository.FileRepository;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,6 +31,20 @@ public class FileService {
         files.setPath(path);
         files.setSuffix(suffix);
         files.setRandomName(randomName);
+        return fileRepository.save(files);
+    }
+
+    public Files addTranslateLanguage(Files files, String language) {
+        String translatedLanguages = files.getTranslatedLanguage();
+        if (StringUtil.isBlank(translatedLanguages)) {
+            files.setTranslatedLanguage(language);
+        }else {
+            String[] languages = translatedLanguages.split(",");
+            ArrayList<String> languageList = new ArrayList<>(Arrays.asList(languages));
+            languageList.add(language);
+            String value = String.join(",", languageList);
+            files.setTranslatedLanguage(value);
+        }
         return fileRepository.save(files);
     }
 

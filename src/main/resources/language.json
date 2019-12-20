@@ -1,51 +1,15 @@
 [
   {
-    "iso": "Afrikaans",
-    "native": "Afrikaans",
-    "name": "南非语",
-    "value": "af"
-  },
-  {
-    "iso": "Albanian",
-    "native": "Shqip",
-    "name": "阿尔巴尼亚语",
-    "value": "sq"
-  },
-  {
-    "iso": "Amharic",
-    "native": "አማርኛ",
-    "name": "阿姆哈拉语",
-    "value": "am"
-  },
-  {
     "iso": "Arabic",
     "native": "العربية",
     "name": "阿拉伯语",
-    "value": "ar"
-  },
-  {
-    "iso": "Armenian",
-    "native": "Հայերեն",
-    "name": "亚美尼亚语",
-    "value": "hy"
-  },
-  {
-    "iso": "Azerbaijani",
-    "native": "azərbaycan dili",
-    "name": "阿塞拜疆语",
-    "value": "az"
+    "value": "ara"
   },
   {
     "iso": "Danish",
     "native": "dansk",
     "name": "丹麦语",
-    "value": "da"
-  },
-  {
-    "iso": "Ukrainian",
-    "native": "Українська",
-    "name": "乌克兰语",
-    "value": "uk"
+    "value": "dan"
   },
   {
     "iso": "Russian",
@@ -54,45 +18,69 @@
     "value": "ru"
   },
   {
-    "iso": "Croatian",
-    "native": "hrvatski",
-    "name": "克罗地亚语",
-    "value": "hr"
-  },
-  {
-    "iso": "Catalan",
-    "native": "català",
-    "name": "加泰罗尼亚语",
-    "value": "ca"
-  },
-  {
     "iso": "Hungarian",
     "native": "magyar",
     "name": "匈牙利语",
     "value": "hu"
   },
   {
-    "iso": "Norwegian",
-    "native": "Norsk",
-    "name": "博克马尔文挪威语",
-    "value": "no"
+    "iso": "China",
+    "native": "中文",
+    "name": "中文",
+    "value": "zh"
   },
   {
-    "iso": "Hindi",
-    "native": "हिन्दी",
-    "name": "印地語",
-    "value": "hi"
+    "iso": "English",
+    "native": "English",
+    "name": "英语",
+    "value": "en"
   },
   {
-    "iso": "Indonesian",
-    "native": "Bahasa",
-    "name": "印度尼西亚语",
-    "value": "id"
+    "iso": "Japanese",
+    "native": "日本語",
+    "name": "日语",
+    "value": "jp"
   },
   {
-    "iso": "Turkish",
-    "native": "Türkçe",
-    "name": "土耳其语",
-    "value": "tr"
+    "iso": "Korean",
+    "native": "한국어",
+    "name": "韩语",
+    "value": "kor"
+  },
+  {
+    "iso": "French",
+    "native": "français",
+    "name": "法语",
+    "value": "fra"
+  },
+  {
+    "iso": "Spanish",
+    "native": "中文",
+    "name": "Español",
+    "value": "spa"
+  },
+  {
+    "iso": "Thai",
+    "native": "ไทย",
+    "name": "泰语",
+    "value": "th"
+  },
+  {
+    "iso": "Portuguese",
+    "native": "Português",
+    "name": "葡萄牙语",
+    "value": "pt"
+  },
+  {
+    "iso": "German",
+    "native": "Deutsch",
+    "name": "德语",
+    "value": "de"
+  },
+  {
+    "iso": "Italian",
+    "native": "Italiano",
+    "name": "意大利语",
+    "value": "it"
   }
 ]

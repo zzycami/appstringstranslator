@@ -1,6 +1,9 @@
 package run.app.translator.controllers;
 
+import com.google.gson.Gson;
+import okhttp3.OkHttpClient;
 import org.apache.commons.io.IOUtils;
+import org.jsoup.internal.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
@@ -13,40 +16,41 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import run.app.translator.baiduTranslate.TransApi;
+import run.app.translator.baiduTranslate.TranslateResponse;
 import run.app.translator.googleTranslate.GoogleTranslate;
 import run.app.translator.models.Files;
 import run.app.translator.models.Strings;
+import run.app.translator.models.Translate;
 import run.app.translator.service.FileService;
 import run.app.translator.service.StringsService;
+import run.app.translator.service.TranslateService;
 
 import javax.script.ScriptException;
 import javax.servlet.http.HttpServletRequest;
 import java.io.*;
+import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Controller
 public class IndexController {
+    public static String baiduAppKey = "20181205000244262";
+    public static String baiduAppSecret = "9Udc6JBe5ntx8iuhVlNi";
+
+
     private FileService fileService;
     private StringsService stringsService;
-    private GoogleTranslate googleTranslate;
+    private TranslateService translateService;
 
     @Value("classpath:language.json")
     private Resource languageResource;
 
     @Value("classpath:gettk.js")
     private Resource scriptResource;
-
-    @Autowired
-    public void setGoogleTranslate(GoogleTranslate googleTranslate) {
-        this.googleTranslate = googleTranslate;
-    }
 
     @Autowired
     public void setFileService(FileService fileService) {
@@ -56,6 +60,11 @@ public class IndexController {
     @Autowired
     public void setStringsService(StringsService stringsService) {
         this.stringsService = stringsService;
+    }
+
+    @Autowired
+    public void setTranslateService(TranslateService translateService) {
+        this.translateService = translateService;
     }
 
     @RequestMapping("/")
@@ -70,12 +79,41 @@ public class IndexController {
         return IOUtils.toString(languageResource.getInputStream(), StandardCharsets.UTF_8);
     }
 
-    @RequestMapping("translate/word/{word}/from/{from}/to/{to}")
+    @RequestMapping("translate/strings/{id}/from/{from}/to/{to}")
     @ResponseBody
-    public String translate(@PathVariable("word") String word, @PathVariable("from") String from, @PathVariable("to") String to) throws IOException, ScriptException, NoSuchMethodException {
-        googleTranslate.setScriptResource(this.scriptResource);
-        String tkk = googleTranslate.getTKK();
-        return googleTranslate.translate(word, from, to);
+    public String translate(@PathVariable("id") Integer id, @PathVariable("from") String from, @PathVariable("to") String to) throws IOException, ScriptException, NoSuchMethodException {
+//        googleTranslate.setScriptResource(this.scriptResource);
+//        String tkk = googleTranslate.getTKK();
+//        return googleTranslate.translate(word, from, to);
+        Optional<Strings> optional = stringsService.findStringsById(id);
+        if (optional.isPresent()) {
+            Strings strings = optional.get();
+            TransApi api = new TransApi(baiduAppKey, baiduAppSecret);
+            String jsonValue = api.getTransResult(strings.getOrigin(), from, to);
+            Gson gson = new Gson();
+            TranslateResponse translateResponse = gson.fromJson(jsonValue, TranslateResponse.class);
+            Files files = strings.getFiles();
+            String translatedLanguages = files.getTranslatedLanguage();
+            if (StringUtil.isBlank(translatedLanguages) || !translatedLanguages.contains(to)) {
+                fileService.addTranslateLanguage(strings.getFiles(), to);
+            }
+            if (translateResponse == null || translateResponse.getTransResult() == null) {
+                return jsonValue;
+            }else {
+                Translate translate = new Translate();
+                translate.setKey(to);
+                translate.setValue(translateResponse.getTransResult().get(0).getDst());
+                translate.setStrings(strings);
+                translateService.save(translate);
+            }
+            return jsonValue;
+        }
+        return null;
+    }
+
+    private String baiduTranslate(String word, String from, String to) {
+        TransApi api = new TransApi(baiduAppKey, baiduAppSecret);
+        return api.getTransResult(word, from, to);
     }
 
     @PostMapping("upload")

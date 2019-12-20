@@ -7,6 +7,7 @@ import run.app.translator.models.Strings;
 import run.app.translator.repository.FileRepository;
 import run.app.translator.repository.StringsRepository;
 
+import javax.swing.text.html.Option;
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -37,6 +38,10 @@ public class StringsService {
             return stringsRepository.findAllByFiles(files);
         }
         return new ArrayList<>();
+    }
+
+    public Optional<Strings> findStringsById(Integer id) {
+        return stringsRepository.findById(id);
     }
 
     public Strings save(Strings strings) {

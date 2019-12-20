@@ -1,7 +1,6 @@
 package run.app.translator.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -10,24 +9,23 @@ import javax.persistence.*;
 
 @Entity
 @ToString
-@Table(name = "strings")
+@Table(name = "translate")
 @Data
 @EqualsAndHashCode(callSuper = true)
-@JsonInclude(JsonInclude.Include.NON_NULL)
-public class Strings extends BaseEntity {
+public class Translate extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Integer id;
 
-    @Column(name = "key", columnDefinition = "text")
+    @Column(name = "key", columnDefinition = "varchar(255)")
     private String key;
 
-    @Column(name = "origin", columnDefinition = "text")
-    private String origin;
+    @Column(name = "value", columnDefinition = "text")
+    private String value;
 
     @JsonIgnore
     @ManyToOne(cascade = {CascadeType.MERGE}, fetch = FetchType.EAGER)
-    @JoinColumn(name = "file_id", referencedColumnName = "id")
-    private Files files;
+    @JoinColumn(name = "strings_id", referencedColumnName = "id")
+    private Strings strings;
 }
