@@ -15,6 +15,12 @@ module.exports = {
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
     ]
   },
+  devModules: [
+    '@nuxtjs/axios'
+  ],
+  axios: {
+    baseURL: 'http://translate.bravedefault.com'
+  },
   /*
   ** Customize the progress-bar color
   */
@@ -40,6 +46,7 @@ module.exports = {
   ** Nuxt.js modules
   */
   modules: [
+    ['@nuxtjs/axios', { anotherOption: true }]
   ],
   /*
   ** Build configuration
