@@ -1,0 +1,10 @@
+{
+  "name": "translator-server",
+  "script": "java",
+  "args": [
+    "-jar",
+    "com.bravedefault-1.0.0.jar"
+  ],
+  "exec_interpreter": "",
+  "exec_mode": "fork"
+}

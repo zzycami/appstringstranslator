@@ -1,5 +1,5 @@
 server:
-  port: 80
+  port: 8095
   use-forward-headers: true
   undertow:
     io-threads: 2
