@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const baseUrl = "";
+const baseUrl = "http://translate.bravedefault.com/";
 
 const axiosInstance = axios.create({
     timeout: 16 * 1000,

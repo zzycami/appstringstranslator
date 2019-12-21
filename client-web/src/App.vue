@@ -115,7 +115,7 @@
       },
       handleSelectTranslateLanguage: function(command) {
         // axios.get(`translate_file/file/${this.currentFile.id}/key/${command.value}`);
-        window.open(`translate_file/file/${this.currentFile.id}/key/${command.value}`, "_blank");
+        window.open(`http://translate.bravedefault.com/translate_file/file/${this.currentFile.id}/key/${command.value}`, "_blank");
       },
       handleSelectLanguage: async function(command) {
         this.translating = true;
