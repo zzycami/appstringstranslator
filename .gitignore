@@ -178,3 +178,15 @@ lint/tmp/
 .idea/jarRepositories.xml
 .idea/compiler.xml
 .idea/compiler.xml
+
+
+/.vscode/.react
+/.eslintcache
+yarn.lock
+bundle/
+Build/
+package-lock.json
+node_modules/
+npm-debug.log
+yarn-error.log
+

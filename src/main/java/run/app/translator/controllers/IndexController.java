@@ -66,12 +66,6 @@ public class IndexController {
         this.translateService = translateService;
     }
 
-    @RequestMapping("/")
-    public String index(Model model) {
-        model.addAttribute("title", "多语言自动配置");
-        return "index";
-    }
-
     @RequestMapping("language")
     @ResponseBody
     public String language() throws IOException {
