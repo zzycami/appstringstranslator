@@ -15,6 +15,9 @@ module.exports = {
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
     ]
   },
+  generate: {
+    dir: "../src/main/resources/static/"
+  },
   devModules: [
     '@nuxtjs/axios'
   ],

@@ -57,8 +57,20 @@
 </template>
 
 <script>
-  //import axios from 'axios';
   import config from '~/nuxt.config';
+  import translate from 'google-translate-open-api';
+
+
+  async function test() {
+    const result = await translate(`I'm fine.`, {
+      tld: "cn",
+      to: "zh-CN",
+    });
+    const data = result.data[0];
+    console.log(data);
+  }
+
+  test();
 
   function sleep (time) {
     return new Promise((resolve) => setTimeout(resolve, time));
@@ -80,11 +92,11 @@
     },
     methods: {
       onSuccess(response) {
-        window.console.log(response);
+        console.log(response);
         this.stringsList = response;
       },
       handleClick(row) {
-        window.console.log(row);
+        console.log(row);
         let self = this;
         this.currentFile = row;
         let translatedList = row.translatedLanguage.split(",");
@@ -104,14 +116,14 @@
       loadLanguages: function () {
         let self = this;
         this.$axios.get("language").then(function (response) {
-          window.console.log(response);
+          console.log(response);
           self.languageList = response.data;
         })
       },
       loadFiles: function () {
         let self = this;
         this.$axios.get("files").then(function (response) {
-          window.console.log(response);
+          console.log(response);
           self.fileList = response.data;
         })
       },
