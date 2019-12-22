@@ -3,7 +3,7 @@
     <header class="header">
       <nav class="inner" role="navigation">
         <router-link to="/" exact>
-          <img class="logo" src="~/assets/logo.svg" alt="logo">文件列表
+          <img class="logo" src="~/assets/logo.svg" alt="logo">{{title}}
         </router-link>
 
         <div class="github">
@@ -17,10 +17,11 @@
 </template>
 
 <script>
+import config from '~/nuxt.config';
 export default {
-  methods: {
-    handleSelect() {
-
+  data() {
+    return {
+      title: config.head.title
     }
   }
 }
