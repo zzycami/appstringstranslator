@@ -20,85 +20,85 @@
 </template>
 
 <script>
-  import config from '~/nuxt.config';
+import config from '~/nuxt.config';
 
-  function sleep (time) {
-    return new Promise((resolve) => setTimeout(resolve, time));
-  }
+function sleep (time) {
+  return new Promise((resolve) => setTimeout(resolve, time));
+}
 
-  export default {
-    name: 'app',
-    data() {
-      return {
-        stringsList: [],
-        fileList: [],
-        languageList: [],
-        translatedList: [],
-        currentFile: null,
-        uploadUrl: ""
-      }
+export default {
+  name: 'app',
+  data() {
+    return {
+      stringsList: [],
+      fileList: [],
+      languageList: [],
+      translatedList: [],
+      currentFile: null,
+      uploadUrl: ""
+    }
+  },
+  methods: {
+    onSuccess(response) {
+      console.log(response);
+      this.stringsList = response;
     },
-    methods: {
-      onSuccess(response) {
-        console.log(response);
-        this.stringsList = response;
-      },
-      handleDeleteFile(row) {
-        this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          this.$axios.delete("files/" + row.id).then((response)=> {
-            this.loadFiles();
-            this.$message({
-              type: 'success',
-              message: '删除成功!'
-            });
-          }).catch((error) => {
-            this.$message({
-              type: 'error',
-              message: '删除失败!'
-            });
-          });
-        }).catch(() => {
+    handleDeleteFile(row) {
+      this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.$axios.delete("files/" + row.id).then((response)=> {
+          this.loadFiles();
           this.$message({
-            type: 'info',
-            message: '已取消删除'
+            type: 'success',
+            message: '删除成功!'
+          });
+        }).catch((error) => {
+          this.$message({
+            type: 'error',
+            message: '删除失败!'
           });
         });
-      },
-      handleCheckFile(row) {
-        this.$router.push(`/file/${row.id}`);
-      },
-      loadLanguages: function () {
-        let self = this;
-        this.$axios.get("language").then(function (response) {
-          console.log(response);
-          self.languageList = response.data;
-        })
-      },
-      loadFiles: function () {
-        let self = this;
-        this.$axios.get("files").then(function (response) {
-          console.log(response);
-          self.fileList = response.data;
-        })
-      },
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        });
+      });
     },
-    components: {
+    handleCheckFile(row) {
+      this.$router.push(`/file/${row.id}`);
     },
-    computed: {
-      showUpload(){
-        return this.stringsList.length === 0;
-      }
+    loadLanguages: function () {
+      let self = this;
+      this.$axios.get("language").then(function (response) {
+        console.log(response);
+        self.languageList = response.data;
+      })
     },
-    created: function () {
-      this.uploadUrl = config.axios.baseURL + "/upload";
-      this.loadFiles();
-      this.loadLanguages();
+    loadFiles: function () {
+      let self = this;
+      this.$axios.get("files").then(function (response) {
+        console.log(response);
+        self.fileList = response.data;
+      })
+    },
+  },
+  components: {
+  },
+  computed: {
+    showUpload(){
+      return this.stringsList.length === 0;
     }
+  },
+  created: function () {
+    this.uploadUrl = config.axios.baseURL + "/upload";
+    this.loadFiles();
+    this.loadLanguages();
   }
+}
 </script>
 
 <style>
