@@ -30,18 +30,14 @@ export default {
   name: 'app',
   data() {
     return {
-      stringsList: [],
       fileList: [],
-      languageList: [],
-      translatedList: [],
       currentFile: null,
       uploadUrl: ""
     }
   },
   methods: {
     onSuccess(response) {
-      console.log(response);
-      this.stringsList = response;
+      this.loadFiles();
     },
     handleDeleteFile(row) {
       this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
@@ -71,13 +67,6 @@ export default {
     handleCheckFile(row) {
       this.$router.push(`/file/${row.id}`);
     },
-    loadLanguages: function () {
-      let self = this;
-      this.$axios.get("language").then(function (response) {
-        console.log(response);
-        self.languageList = response.data;
-      })
-    },
     loadFiles: function () {
       let self = this;
       this.$axios.get("files").then(function (response) {
@@ -89,14 +78,10 @@ export default {
   components: {
   },
   computed: {
-    showUpload(){
-      return this.stringsList.length === 0;
-    }
   },
   created: function () {
     this.uploadUrl = config.axios.baseURL + "/upload";
     this.loadFiles();
-    this.loadLanguages();
   }
 }
 </script>

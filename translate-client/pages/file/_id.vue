@@ -25,8 +25,8 @@
               :data="stringsList" border>
       <el-table-column type="selection" width="55"/>
       <el-table-column fixed prop="key" label="名称" width="150"/>
-      <el-table-column prop="origin" label="原版翻译" width="150"/>
-      <el-table-column :key="translated.value" width="150" v-for="translated in translatedList" :prop="translated.value"
+      <el-table-column prop="origin" label="原版翻译" :width="translatedList.length > 3 ? 150 : ''"/>
+      <el-table-column v-if="translatedList.length > 0" :key="translated.value" width="150" v-for="translated in translatedList" :prop="translated.value"
                        :label="translated.name"/>
       <el-table-column fixed="right" label="操作" width="100">
         <template slot-scope="scope">
@@ -117,7 +117,36 @@ export default {
 
     },
     handleDeleteSingle(row) {
-
+      this.$confirm('此操作将永久删除该条记录, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.$axios.delete(`strings/${row.id}`).then((response)=> {
+          this.loadStrings(this.currentFile.id).then(response => {
+            this.stringsList = response;
+          }).catch(error => {
+            this.$message({
+              type: 'error',
+              message: error.message
+            });
+          });
+          this.$message({
+            type: 'success',
+            message: '删除成功!'
+          });
+        }).catch((error) => {
+          this.$message({
+            type: 'error',
+            message: '删除失败!'
+          });
+        });
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        });
+      });
     }
   },
   components: {
@@ -135,16 +164,18 @@ export default {
       this.languageList = languages;
       this.loadFile(this.fileId).then( file =>{
         this.currentFile = file;
-        console.log(file.translatedLanguage);
-        let translatedList = file.translatedLanguage.split(",");
-        console.log(translatedList);
-        this.translatedList = [];
-        this.languageList.forEach((item)=> {
-          if(translatedList.includes(item.value)) {
-            this.translatedList.push(item);
-          }
-        });
-        console.log(this.translatedList);
+        if (file.translatedLanguage) {
+          console.log(file.translatedLanguage);
+          let translatedList = file.translatedLanguage.split(",");
+          console.log(translatedList);
+          this.translatedList = [];
+          this.languageList.forEach((item)=> {
+            if(translatedList.includes(item.value)) {
+              this.translatedList.push(item);
+            }
+          });
+          console.log(this.translatedList);
+        }
         this.loadStrings(file.id).then(response => {
           this.stringsList = response;
         }).catch(error => {
