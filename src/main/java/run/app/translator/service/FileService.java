@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import run.app.translator.models.Files;
 import run.app.translator.repository.FileRepository;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -14,6 +15,12 @@ import java.util.Optional;
 @Service
 public class FileService {
     private FileRepository fileRepository;
+    private StringsService stringsService;
+
+    @Autowired
+    public void setStringsService(StringsService stringsService) {
+        this.stringsService = stringsService;
+    }
 
     @Autowired
     public void setFileRepository(FileRepository fileRepository) {
@@ -32,6 +39,10 @@ public class FileService {
         files.setSuffix(suffix);
         files.setRandomName(randomName);
         return fileRepository.save(files);
+    }
+
+    public Optional<Files> getFile(Integer id) {
+        return fileRepository.findById(id);
     }
 
     public Files addTranslateLanguage(Files files, String language) {
@@ -57,6 +68,7 @@ public class FileService {
     }
 
     public void remove(Integer id) {
+        stringsService.deleteByFiles(id);
         fileRepository.deleteById(id);
     }
 }

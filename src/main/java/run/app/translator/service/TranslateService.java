@@ -80,6 +80,16 @@ public class TranslateService {
         return  translateRepository.saveAll(translateArrayList);
     }
 
+    public void deleteByStrings(Strings strings) {
+        Iterable<Translate> translates = findAllByStrings(strings);
+        translateRepository.deleteInBatch(translates);
+    }
+
+    public void deleteByStringsId(Integer stringsId) {
+        Iterable<Translate> translates = findTranslateByStrings(stringsId);
+        translateRepository.deleteInBatch(translates);
+    }
+
     public void delete(Integer id) {
         translateRepository.deleteById(id);
     }

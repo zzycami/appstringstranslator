@@ -17,6 +17,13 @@ public class StringsService {
 
     private FileRepository fileRepository;
 
+    private TranslateService translateService;
+
+    @Autowired
+    public void setTranslateService(TranslateService translateService) {
+        this.translateService = translateService;
+    }
+
     @Autowired
     public void setFileRepository(FileRepository fileRepository) {
         this.fileRepository = fileRepository;
@@ -52,7 +59,16 @@ public class StringsService {
        return  stringsRepository.saveAll(stringsArrayList);
     }
 
+    public void deleteByFiles(Integer fileId) {
+        Iterable<Strings> strings = findStringsByFileId(fileId);
+        for (Strings string : strings) {
+            translateService.deleteByStrings(string);
+        }
+        stringsRepository.deleteInBatch(strings);
+    }
+
     public void delete(Integer id) {
+        translateService.deleteByStringsId(id);
         stringsRepository.deleteById(id);
     }
 }

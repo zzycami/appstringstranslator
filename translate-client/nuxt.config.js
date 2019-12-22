@@ -5,7 +5,7 @@ module.exports = {
   ** Headers of the page
   */
   head: {
-    title: process.env.npm_package_name || '',
+    title: '在线国际化工具',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
@@ -22,7 +22,7 @@ module.exports = {
     '@nuxtjs/axios'
   ],
   axios: {
-    baseURL: 'http://translate.bravedefault.com'
+    baseURL: process.env.NODE_ENV === 'production' ? 'http://translate.bravedefault.com' : 'http://localhost:8095'
   },
   /*
   ** Customize the progress-bar color
@@ -62,4 +62,4 @@ module.exports = {
     extend (config, ctx) {
     }
   }
-}
+};

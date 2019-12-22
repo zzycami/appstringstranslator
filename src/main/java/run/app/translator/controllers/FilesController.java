@@ -7,6 +7,9 @@ import org.springframework.web.bind.annotation.*;
 import run.app.translator.models.Files;
 import run.app.translator.service.FileService;
 
+import java.io.File;
+import java.util.Optional;
+
 @RestController
 @RequestMapping("/files")
 public class FilesController {
@@ -20,6 +23,17 @@ public class FilesController {
     @GetMapping("")
     public ResponseEntity<?> list() {
         return new ResponseEntity<Object>(fileService.findAllFiles(), HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<?> file(@PathVariable("id") Integer id) {
+        Optional<Files> optional = fileService.getFile(id);
+        if (optional.isPresent()) {
+            Files files = optional.get();
+            return new ResponseEntity<Files>(files, HttpStatus.OK);
+        }else {
+            return new ResponseEntity<Files>( HttpStatus.NOT_FOUND);
+        }
     }
 
     @PostMapping("")
