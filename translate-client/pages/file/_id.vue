@@ -28,9 +28,16 @@
       <el-table-column prop="origin" label="原版翻译" :width="translatedList.length > 3 ? 150 : ''"/>
       <el-table-column v-if="translatedList.length > 0" :key="translated.value" width="150" v-for="translated in translatedList" :prop="translated.value"
                        :label="translated.name"/>
-      <el-table-column fixed="right" label="操作" width="100">
+      <el-table-column fixed="right" label="操作" width="120">
         <template slot-scope="scope">
-          <el-button @click="handleTranslateSingle(scope.row)" type="text" size="small">翻译</el-button>
+          <el-dropdown class="language-list"  @command="handleSingleSelectTranslateLanguage">
+            <el-button type="text" size="small" class="el-dropdown-link">
+              翻译<i class="el-icon-arrow-down el-icon--right"/>
+            </el-button>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item :key="language.value" :command="{language, scope: scope}" v-for="language in translatedList">{{ language.name + " - " + language.native }}</el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
           <el-button @click="handleDeleteSingle(scope.row)" type="text" size="small">删除</el-button>
         </template>
       </el-table-column>
@@ -107,14 +114,24 @@ export default {
         this.translatedList.push(command);
       }
     },
+    handleSingleSelectTranslateLanguage(command) {
+      console.log(command);
+      let id = command.scope.row.id;
+      let from = command.scope.row.origin;
+      let to = command.language.value;
+      let index = command.scope.$index;
+      this.translating = true;
+      this.$axios.get(`translate/strings/${id}/from/${from}/to/${to}`).then(response => {
+        let result = response.data.trans_result[0].dst;
+        this.stringsList[index][to] = result;
+        this.translating = false;
+      })
+    },
     translateSingle(index, id, from, to) {
       this.$axios.get(`translate/strings/${id}/from/${from}/to/${to}`).then(response => {
         let result = response.data.trans_result[0].dst;
         this.stringsList[index][to] = result;
       })
-    },
-    handleTranslateSingle(row) {
-
     },
     handleDeleteSingle(row) {
       this.$confirm('此操作将永久删除该条记录, 是否继续?', '提示', {
