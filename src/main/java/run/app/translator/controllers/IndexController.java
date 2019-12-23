@@ -37,8 +37,8 @@ import java.util.regex.Pattern;
 
 @Controller
 public class IndexController {
-    public static String baiduAppKey = "20181205000244262";
-    public static String baiduAppSecret = "9Udc6JBe5ntx8iuhVlNi";
+    public static String baiduAppKey = "";
+    public static String baiduAppSecret = "";
 
 
     private FileService fileService;
