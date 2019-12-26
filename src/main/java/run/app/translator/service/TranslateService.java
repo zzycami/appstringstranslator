@@ -120,10 +120,14 @@ public class TranslateService {
             Iterable<Translate> translateList = findTranslateByStringsAndKey(strings.getId(), key);
            if (translateList.iterator().hasNext()) {
                Translate translate = translateList.iterator().next();
-               write.append("\"").append(strings.getKey()).append("\" : ");
-               write.append("\"").append(translate.getValue()).append("\";").append(enter);
+               write.append("\"").append(strings.getKey()).append("\" = ");
+               String translatedValue = translate.getValue();
+               if (translate.getValue().contains("\"")) {
+                   translatedValue = translate.getValue().replace("\"", "'");
+               }
+               write.append("\"").append(translatedValue).append("\";").append(enter);
            }else {
-               write.append("\"").append(strings.getKey()).append("\" : ");
+               write.append("\"").append(strings.getKey()).append("\" = ");
                write.append("\"").append(strings.getOrigin()).append("\";").append(enter);
            }
         }
